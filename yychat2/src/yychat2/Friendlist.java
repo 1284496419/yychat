@@ -8,195 +8,144 @@ import java.awt.event.MouseListener;
 
 import javax.swing.*;
 
-
-    public class Friendlist extends JFrame implements ActionListener,MouseListener{
-	CardLayout cardLayout;
+public class Friendlist extends JFrame implements ActionListener,MouseListener{//顶层容器
+	CardLayout cardLayout;//卡片布局
+	//定义对象的引用变量
+	JPanel myFriendPanel;
+	JButton myFriendJButton;
 	
-	JPanel friendpanel;
-	JButton friendbutton;
-	JPanel strangeanddislikepanel;
-	JButton strangebutton;
-	JButton dislikebutton;
-	
-	JScrollPane friendscrollpane;
-	JPanel friendlistpanel;
+	JScrollPane myFriendJScrollPane;
+	JPanel myFriendListJPanel;
 	static final int FRIENDCOUNT=51;
-	JLabel[] friendlabel=new JLabel[FRIENDCOUNT];
+	JLabel[] myFriendJLabel=new JLabel[FRIENDCOUNT];//对象数组?
+	//myFriendJLabel[0]...myFriendJLabel[50] 每一个都是引用变量
 	
+	JPanel myStrangerBlackListJPanel;
+	JButton myStrangerJButton;
+	JButton blackListJButton;
 	
-	JPanel strangepanel;
-	JPanel friendandstrangepanel;
-	JButton friendbutton1;
-	JButton strangebutton1;
-	JButton dislikebutton1;
+	JPanel myStrangerPanel;
 	
-	JScrollPane strangescrollpane;
-	JPanel strangelistpanel;
-	static final int STRANGERCOUNT=21;
-	JLabel[] strangelabel=new JLabel[STRANGERCOUNT];
+	JPanel myFriendStrangerPanel;
+	JButton myFriendJButton1;
+	JButton myStrangerJButton1;
 	
-	JPanel dislikepanel;
-	JPanel friendandstrangeanddislike;
-	JButton friendbutton2;
-	JButton strangebutton2;
-	JButton dislikebutton2;
-	
-	JScrollPane dislikescrollpane;
-	JPanel dislikelistpanel;
-	static final int DISLIKECOUNT=21;
-	JLabel[] dislikelabel=new JLabel[DISLIKECOUNT];
+	JButton blackListJButton1;
 	
 	String userName;
 	
 	public Friendlist(String userName){
-		this.userName=userName;
-		//卡1
-		friendpanel=new JPanel(new BorderLayout());
-		friendbutton=new JButton("我的好友");
-		friendpanel.add(friendbutton,"North");
+		this.userName=userName;//局部变量给成员变量赋值
 		
+		//第一张卡片，创建对象
+		myFriendPanel=new JPanel(new BorderLayout());//边界布局
+		//System.out.println(myFriendPanel.getLayout());
 		
-		friendlistpanel=new JPanel(new GridLayout(FRIENDCOUNT-1,1));
+		myFriendJButton=new JButton("我的好友");		
+		myFriendPanel.add(myFriendJButton,"North");
+		
+		//中部
+		/*JScrollPane myFriendJScrollPane;
+		JPanel myFriendListJPanel;
+		static final int FRIENDCOUNT=51;
+		JLabel[] myFriendJLabel;//对象数组*/
+		myFriendListJPanel=new JPanel(new GridLayout(FRIENDCOUNT-1,1));
 		for(int i=1;i<FRIENDCOUNT;i++){
-			friendlabel[i]=new JLabel(i+"",new ImageIcon("tu/mm.jpg"),JLabel.LEFT);
-			friendlabel[i].addMouseListener(this);
-			friendlistpanel.add(friendlabel[i]);
+			myFriendJLabel[i]=new JLabel(i+"",new ImageIcon("images/mm.jpg"),JLabel.LEFT);//"1"
+			myFriendJLabel[i].addMouseListener(this);//添加鼠标监听器
+			myFriendListJPanel.add(myFriendJLabel[i]);
 		}
-		friendscrollpane=new JScrollPane(friendlistpanel);
-		friendpanel.add(friendscrollpane);
+		//myFriendJScrollPane =new JScrollPane();
+		//myFriendJScrollPane.add(myFriendListJPanel);
+		myFriendJScrollPane =new JScrollPane(myFriendListJPanel);
+		myFriendPanel.add(myFriendJScrollPane);
 		
+		myStrangerBlackListJPanel=new JPanel(new GridLayout(2,1));//网格布局
+		myStrangerJButton=new JButton("我的陌生人");
+		//添加事件监听器
+		myStrangerJButton.addActionListener(this);
 		
-		strangeanddislikepanel=new JPanel(new GridLayout(2,1));
-		strangebutton=new JButton("陌生人");
-		strangebutton.addActionListener(this);
+		blackListJButton=new JButton("黑名单");
+		myStrangerBlackListJPanel.add(myStrangerJButton);
+		myStrangerBlackListJPanel.add(blackListJButton);
+		myFriendPanel.add(myStrangerBlackListJPanel,"South");
 		
-		dislikebutton=new JButton("黑名单");
-		strangeanddislikepanel.add(strangebutton);
-		strangeanddislikepanel.add(dislikebutton);
-		friendpanel.add(strangeanddislikepanel,"South");
+		//另一张卡片
+		myStrangerPanel = new JPanel(new BorderLayout());
 		
+		myFriendStrangerPanel=new JPanel(new GridLayout(2,1));
+		myFriendJButton1=new JButton("我的好友");//添加监听器
+		myFriendJButton1.addActionListener(this);
+		myStrangerJButton1=new JButton("我的陌生人");
+		myFriendStrangerPanel.add(myFriendJButton1);
+		myFriendStrangerPanel.add(myStrangerJButton1);
+		myStrangerPanel.add(myFriendStrangerPanel,"North");	
 		
-		//卡2
-		strangepanel=new JPanel(new BorderLayout());
-		friendandstrangepanel=new JPanel(new GridLayout(2,1));
-		friendbutton1=new JButton("我的好友");
-		friendbutton1.addActionListener(this);
-		
-		
-		strangebutton1=new JButton("陌生人");
-		friendandstrangepanel.add(friendbutton1);
-		friendandstrangepanel.add(strangebutton1);
-		strangepanel.add(friendandstrangepanel,"North");
-		
-		strangelistpanel=new JPanel(new GridLayout(STRANGERCOUNT-1,1));
-		for(int i=1;i<STRANGERCOUNT;i++){
-			strangelabel[i]=new JLabel(i+"",new ImageIcon("tu/mm.jpg"),JLabel.LEFT);
-			strangelabel[i].addMouseListener(this);
-			strangelistpanel.add(strangelabel[i]);
-		}
-		strangescrollpane=new JScrollPane(strangelistpanel);
-		strangepanel.add(strangescrollpane);
-		
-		
-		dislikebutton1=new JButton("黑名单");
-		dislikebutton1.addActionListener(this);
-		strangepanel.add(dislikebutton1,"South");
-		
-		
-		
-		//卡3
-		dislikepanel=new JPanel(new BorderLayout());
-		friendandstrangeanddislike=new JPanel(new GridLayout(3,1));
-		friendbutton2=new JButton("我的好友");
-		friendbutton2.addActionListener(this);
-		strangebutton2=new JButton("陌生人");
-		strangebutton2.addActionListener(this);
-		dislikebutton2=new JButton("黑名单");
-		friendandstrangeanddislike.add(friendbutton2);
-		friendandstrangeanddislike.add(strangebutton2);
-		friendandstrangeanddislike.add(dislikebutton2);
-		dislikepanel.add(friendandstrangeanddislike,"North");
-		
-		dislikelistpanel=new JPanel(new GridLayout(DISLIKECOUNT-1,1));
-		for(int i=1;i<DISLIKECOUNT;i++){
-			dislikelabel[i]=new JLabel(i+"",new ImageIcon("tu/mm.jpg"),JLabel.LEFT);
-			dislikelabel[i].addMouseListener(this);
-			dislikelistpanel.add(dislikelabel[i]);
-		}
-		dislikescrollpane=new JScrollPane(dislikelistpanel);
-		dislikepanel.add(dislikescrollpane);
+		blackListJButton1=new JButton("黑名单");
+		myStrangerPanel.add(blackListJButton1,"South");
 		
 		cardLayout=new CardLayout();
 		this.setLayout(cardLayout);
-		this.add(friendpanel,"1");
-		this.add(strangepanel,"2");
-		this.add(dislikepanel,"3");
+		this.add(myFriendPanel,"1");		 
+		this.add(myStrangerPanel,"2");
 		
 		this.setSize(150,500);
-		this.setTitle(this.userName +" 的好友列表");
-		this.setLocationRelativeTo(null);
+		this.setTitle(this.userName+" 的好友列表");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
-
+	
 	public static void main(String[] args) {
 		//FriendList friendList=new FriendList();
-    }
-	
+
+	}
+
 	@Override
-	public void actionPerformed(ActionEvent arg0){
-		if(arg0.getSource()==strangebutton){
-			cardLayout.show(this.getContentPane(),"2");
-	    }
-		if(arg0.getSource()==friendbutton1){
-			cardLayout.show(this.getContentPane(),"1");
-	    }
-		
-		if(arg0.getSource()==dislikebutton1){
-			cardLayout.show(this.getContentPane(),"3");
-	    }
-		if(arg0.getSource()==friendbutton2){
-			cardLayout.show(this.getContentPane(),"1");
-	    }
-		if(arg0.getSource()==strangebutton2){
-			cardLayout.show(this.getContentPane(),"2");
-	    }
-		
-    }
+	public void actionPerformed(ActionEvent arg0) {
+		if(arg0.getSource()==myStrangerJButton){
+			cardLayout.show(this.getContentPane(), "2");
+		}
+		if(arg0.getSource()==myFriendJButton1){
+			cardLayout.show(this.getContentPane(), "1");
+		}		
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		if(arg0.getClickCount()==2){
-			JLabel jlb1=(JLabel)arg0.getSource();
-			String receiver =jlb1.getText();
-			new FriendChat(this.userName,receiver);
+			JLabel jlbl=(JLabel)arg0.getSource();
+			String receiver=jlbl.getText();
+			
+			//new FriendChat(this.userName,receiver);
+			new Thread(new FriendChat(this.userName,receiver)).start(); 
 		}
+		
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		JLabel jlabel=(JLabel)arg0.getSource();
-		jlabel.setForeground(Color.red);
+	public void mouseEntered(MouseEvent e) {
+		JLabel jLabel=(JLabel)e.getSource();
+		jLabel.setForeground(Color.red);		
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		JLabel jlabel=(JLabel)arg0.getSource();
-		jlabel.setForeground(Color.black);
+	public void mouseExited(MouseEvent e) {
+		JLabel jLabel=(JLabel)e.getSource();
+		jLabel.setForeground(Color.black);	
+		
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
+	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
+	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
+
 }
-
