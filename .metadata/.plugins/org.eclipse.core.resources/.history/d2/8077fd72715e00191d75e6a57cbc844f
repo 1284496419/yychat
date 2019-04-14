@@ -1,4 +1,4 @@
-package yychat2;
+package com.yychatclient.view;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 import javax.swing.*;
 
-public class Friendlist extends JFrame implements ActionListener,MouseListener{//顶层容器
+public class FriendList extends JFrame implements ActionListener,MouseListener{//顶层容器
 	
 	public static HashMap hmFriendChat1=new HashMap<String,FriendChat1>();
 	
@@ -51,7 +51,7 @@ public class Friendlist extends JFrame implements ActionListener,MouseListener{/
 	
 	String userName;
 	
-	public Friendlist(String userName){
+	public FriendList(String userName){
 		this.userName=userName;//局部变量给成员变量赋值
 		//第一张卡片，创建对象
 		myFriendPanel=new JPanel(new BorderLayout());//边界布局

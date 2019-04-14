@@ -1,4 +1,4 @@
-/*package yychat2;
+package yychat2;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,7 +18,7 @@ import javax.swing.JTextField;
 import com.yychat.model.Message;
 import com.yychatclient.controller.ClientConnect;
 
-public class FriendChat extends JFrame implements ActionListener,Runnable{//动作监听器
+public class FriendChat1 extends JFrame implements ActionListener{//动作监听器
  
 	//中间部分
 	JScrollPane jsp;//滚动条
@@ -31,9 +32,11 @@ public class FriendChat extends JFrame implements ActionListener,Runnable{//动作
 	
 	String sender;
 	String receiver;
-	public FriendChat(String sender,String receiver){//自定义构造方法
+	
+	public FriendChat1(String sender,String receiver){//自定义构造方法
 		this.sender=sender;
 		this.receiver=receiver;
+		
 		jta = new JTextArea();//文本区域
 		jta.setEditable(false);//不允许在文本域进行编辑
 		jta.setForeground(Color.red);//显体颜色
@@ -71,7 +74,8 @@ public class FriendChat extends JFrame implements ActionListener,Runnable{//动作
 		 mess.setMessageType(Message.message_Common);
 		 ObjectOutputStream oos;
 		try {
-			oos = new ObjectOutputStream(ClientConnect.s.getOutputStream());
+			Socket s=(Socket)ClientConnect.hsmSocket.get(sender);
+			oos = new ObjectOutputStream(s.getOutputStream());
 			oos.writeObject(mess);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -80,18 +84,8 @@ public class FriendChat extends JFrame implements ActionListener,Runnable{//动作
 	 }
 		
 	}
-	@Override
-	public void run() {
-		ObjectInputStream ois;
-		try {
-			ois=new ObjectInputStream(ClientConnect.s.getInputStream());
-			Message mess=(Message)ois.readObject();
-			String showMessage=mess.getSender()+"对"+mess.getReceiver()+"说："+mess.getContent();
-			System.out.println(showMessage);
-			jta.append(showMessage+"\r\n");
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	} 
+	public void appendJta(String showMessage){
+	  jta.append(showMessage+"\r\n");
+	}
 
-}*/
+}

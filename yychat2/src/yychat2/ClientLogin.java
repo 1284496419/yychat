@@ -88,7 +88,7 @@ public class ClientLogin extends JFrame implements ActionListener{//类名：Client
 				new Friendlist(userName);
 				this.dispose();
 			}else {
-				JOptionPane.showMessageDialog(this,"密码错误");
+				JOptionPane.showMessageDialog(this,"旺旺没想到");
 			}			
 		}			
 		
