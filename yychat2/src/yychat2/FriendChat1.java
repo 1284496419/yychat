@@ -53,6 +53,7 @@ public class FriendChat1 extends JFrame implements ActionListener{//动作监听器
 		this.add(jp,"South");
 		this.setSize(350, 240);
 		this.setTitle(sender+"正在和"+receiver+"聊天");
+		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);//居中显示窗口
 		this.setVisible(true);
 		

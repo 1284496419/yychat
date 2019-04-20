@@ -25,7 +25,8 @@ public class ClientConnect {
 		}
 	}
 	
-	public Message loginValidate(User user){
+	public boolean loginValidate(User user){
+		boolean loginSuccess=false;
 		//输入输出流对象，发送对象
 		//字节输出流对象 包装 对象输出流对象
 		ObjectOutputStream oos;
@@ -42,6 +43,7 @@ public class ClientConnect {
 			mess=(Message)ois.readObject();		
 			
 			if(mess.getMessageType().equals(Message.message_LoginSuccess)){
+				   loginSuccess=true;
 				   System.out.println(user.getUserName()+"登录成功");
 				   hsmSocket.put(user.getUserName(),s);
 				   new ClientReceiver(s).start();
@@ -50,6 +52,6 @@ public class ClientConnect {
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return mess;		
+		return loginSuccess;		
 	}
 }

@@ -62,9 +62,16 @@ public class Friendlist extends JFrame implements ActionListener,MouseListener{/
 		myFriendListJPanel=new JPanel(new GridLayout(FRIENDCOUNT-1,1));
 		for(int i=1;i<FRIENDCOUNT;i++){
 			myFriendJLabel[i]=new JLabel(i+"",new ImageIcon("images/YY1.gif"),JLabel.LEFT);//"1"
+
+			myFriendJLabel[i].setEnabled(false);
+			if(Integer.parseInt(userName)==i)
+				myFriendJLabel[i].setEnabled(true);
+			
 			myFriendJLabel[i].addMouseListener(this);//添加鼠标监听器
 			myFriendListJPanel.add(myFriendJLabel[i]);
 		}
+		myFriendJLabel[Integer.parseInt(userName)].setEnabled(true);
+		
 		myFriendJScrollPane =new JScrollPane(myFriendListJPanel);
 		myFriendPanel.add(myFriendJScrollPane);
 		
@@ -146,6 +153,14 @@ public class Friendlist extends JFrame implements ActionListener,MouseListener{/
 		//FriendList friendList=new FriendList();
 
 	}
+	public void setEnableFriendIcon(String friendString){
+		String[] friendName=friendString.split(" ");
+		int count=friendName.length;
+		for(int i=1;i<count;i++){
+			System.out.println("friendName["+i+"]:"+friendName[i]);
+		myFriendJLabel[Integer.parseInt(friendName[i])].setEnabled(true);
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -174,8 +189,17 @@ public class Friendlist extends JFrame implements ActionListener,MouseListener{/
 			
 			//new FriendChat(this.userName,receiver);
 			//new FriendChat1(this.userName,receiver);
-			FriendChat1 friendChat1=new FriendChat1(this.userName,receiver);
-			hmFriendChat1.put(userName+"to"+receiver,friendChat1);
+			
+			//思路：首先去查找好友聊天界面，如果没有找到，才新建，找到的话就显示。
+			FriendChat1 friendChat1=(FriendChat1)hmFriendChat1.get(userName+"to"+receiver);
+			if(friendChat1==null){
+				friendChat1=new FriendChat1(this.userName,receiver);
+				hmFriendChat1.put(userName+"to"+receiver,friendChat1);
+			}else{
+				friendChat1.setVisible(true);
+			}
+			//FriendChat1 friendChat1=new FriendChat1(this.userName,receiver);
+			//hmFriendChat1.put(userName+"to"+receiver,friendChat1);
 		}
 		
 	}
