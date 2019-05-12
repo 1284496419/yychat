@@ -33,13 +33,13 @@ public class ServerReceiverThread extends Thread{
 			System.out.println(mess.getSender()+"对"+mess.getReceiver()+"说："+mess.getContent());
 			
 			if(mess.getMessageType().equals(Message.message_Common)){
-				Socket s1=(Socket)StartServer.hsmSocket.get(mess.getReceiver());
+				Socket s1=(Socket)StartServer.hmSocket.get(mess.getReceiver());
 				sendMessage(s1,mess);//转发聊天信息
 			}
 			
 			//第二步：服务器接收到该请求后发送在线好友信息(类型：message_OnlineFriend)
 			if(mess.getMessageType().equals(Message.message_RequestOnlineFriend)){
-				Set friendSet=StartServer.hsmSocket.keySet();
+				Set friendSet=StartServer.hmSocket.keySet();
 				//Iterator it=friendSet.iterator();
 				Iterator it = friendSet.iterator();
 				String friendName;

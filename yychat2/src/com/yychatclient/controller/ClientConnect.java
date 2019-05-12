@@ -46,7 +46,7 @@ public class ClientConnect {
 				   loginSuccess=true;
 				   System.out.println(user.getUserName()+"µÇÂ¼³É¹¦");
 				   hsmSocket.put(user.getUserName(),s);
-				   new ClientReceiver(s).start();
+				   new ClientReceiverThread(s).start();
 				}
 			
 		} catch (IOException | ClassNotFoundException e) {
