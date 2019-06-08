@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
+import javax.swing.JOptionPane;
+
 import com.yychat.model.Message;
 import com.yychatclient.view.ClientLogin;
 import com.yychatclient.view.FriendChat1;
@@ -13,40 +15,69 @@ public class ClientReceiverThread extends Thread{
 	
 	private Socket s;
 	
-	public ClientReceiverThread(Socket s){
+	public ClientReceiverThread(Socket s) {
 		this.s=s;
-} 
-	public void run(){
+	}
+	public void run() {
 		ObjectInputStream ois;
-		while(true){
-		try {
-			ois=new ObjectInputStream(s.getInputStream());
+		while(true) {
+			try {
+			ois =new ObjectInputStream(s.getInputStream());
 			Message mess=(Message)ois.readObject();
-			String showMessage=mess.getSender()+"对"+mess.getReceiver()+"说："+mess.getContent();
+			String showMessage=mess.getSender()+"对"+mess.getReceiver()+"说；"+mess.getContent();
 			System.out.println(showMessage);
-			if(mess.getMessageType().equals(Message.message_Common)){
-			//jta.append(showMessage+"\r\n");
 			
+			
+			if(mess.getMessageType().equals(Message.message_AddFriendFailure_NoUser)) {
+				JOptionPane.showMessageDialog(null, "添加好友失！用户不存在！");
+			}
+			if(mess.getMessageType().equals(Message.message_AddFriendFailure_AlreadyFriend)) {
+				JOptionPane.showMessageDialog(null, "添加好友失！不能重复添加好友！");
+			}
+			if(mess.getMessageType().equals(Message.message_AddFriendSuccess)) {
+				JOptionPane.showMessageDialog(null, "添加好成功！");
+				String allFriendName=mess.getContent();
+				FriendList friendList=(FriendList)ClientLogin.hmFriendlist.get(mess.getSender());
+				friendList.updateFriendIcon(allFriendName);
+				friendList.revalidate();
+			}
+			
+			if(mess.getMessageType().equals(Message.message_Common)) {
+			
+				
+				
 			FriendChat1 friendChat1=(FriendChat1)FriendList.hmFriendChat1.get(mess.getReceiver()+"to"+mess.getSender());
+			
 			
 			friendChat1.appendJta(showMessage);
 			}
-			//第三步：
-			if(mess.getMessageType().equals(Message.message_OnlineFriend)){
+			
+			
+			
+			if(mess.getMessageType().equals(Message.message_OnlineFriend)) {
 				System.out.println("在线好友"+mess.getContent());
 				
+				
 				FriendList friendList=(FriendList)ClientLogin.hmFriendlist.get(mess.getReceiver());
+				
 				friendList.setEnableFriendIcon(mess.getContent());
 			}
-			//激活新上线用户图标步骤2、接收消息、激活图标
-			if(mess.getMessageType().equals(Message.message_NewOnlineFriend)){
-				System.out.println("新用户上线了，用户名："+mess.getContent());
+			
+			
+			if(mess.getMessageType().equals(Message.message_NewOnlineFriend)) {
+				System.out.println("新用户上线了，用户名；"+mess.getContent());
+				
 				FriendList friendList=(FriendList)ClientLogin.hmFriendlist.get(mess.getReceiver());
+				System.out.println("FriendList对象名:"+mess.getReceiver());
+				
 				friendList.setEnableNewFriendIcon(mess.getContent());
+				
+				
 			}
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+			
+		   }catch(IOException | ClassNotFoundException e) {
+			   e.printStackTrace();
+		   }
 		}
 	}
 }
